@@ -1,7 +1,10 @@
 package ru.university.task9;
 
+import java.util.ArrayList;
+
 public class Road {
     int[][] cells;
+    ArrayList<Car> cars = new ArrayList<>();
 
     Road(int lanes, int size) {
         if (lanes < 1 || lanes > 4 || size < 1) {
@@ -16,6 +19,12 @@ public class Road {
             return false;
         }
 
+        for (Car a : cars) {
+            if (a.id == car.id) {
+                return false;
+            }
+        }
+
         for (int i = car.pos; i < car.pos + car.len; i++) {
             if (cells[car.lane][i] != 0) {
                 return false;
@@ -25,7 +34,20 @@ public class Road {
         for (int i = car.pos; i < car.pos + car.len; i++) {
             cells[car.lane][i] = car.id;
         }
+        cars.add(car);
         return true;
+    }
+
+    void step() {
+        for (Car car : cars) {
+            int next = car.pos + car.len;
+            if (next >= cells[car.lane].length || cells[car.lane][next] != 0) {
+                continue;
+            }
+            cells[car.lane][car.pos] = 0;
+            cells[car.lane][next] = car.id;
+            car.pos++;
+        }
     }
 
     void show() {
