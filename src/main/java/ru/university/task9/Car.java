@@ -7,6 +7,7 @@ public class Car {
     int lane;
     int pos;
     int to;
+    String turn;
     boolean stopped;
 
     Car(int id, String tip, int len, int lane, int pos) {

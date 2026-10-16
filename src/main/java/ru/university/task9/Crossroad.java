@@ -7,6 +7,7 @@ public class Crossroad {
     boolean[] stop;
     int green = 0;
     int time = 0;
+    int outLane = 0;
 
     Crossroad(int count, int lanes, int size) {
         if (count < 3 || count > 4) {
@@ -22,15 +23,38 @@ public class Crossroad {
         }
     }
 
-    boolean add(Car car, int from, int to) {
-        if (from < 0 || from >= in.length || to < 0 || to >= out.length) {
+    boolean add(Car car, int from, String turn) {
+        if (from < 0 || from >= in.length) {
+            return false;
+        }
+        int to;
+        if ("прямо".equals(turn)) {
+            to = (from + 2) % 4;
+        } else if ("налево".equals(turn)) {
+            to = (from + 1) % 4;
+        } else if ("направо".equals(turn)) {
+            to = (from + 3) % 4;
+        } else if ("разворот".equals(turn)) {
+            to = from;
+        } else {
+            return false;
+        }
+        if (to >= out.length) {
             return false;
         }
         if (!in[from].add(car)) {
             return false;
         }
         car.to = to;
+        car.turn = turn;
         return true;
+    }
+
+    boolean changeLane(Car car, int from, int lane) {
+        if (from < 0 || from >= in.length) {
+            return false;
+        }
+        return in[from].changeLane(car, lane);
     }
 
     void step() {
@@ -40,9 +64,9 @@ public class Crossroad {
 
         if (!center.cars.isEmpty()) {
             Car car = center.cars.get(0);
-            if (car.pos + car.len == center.cells[0].length && out[car.to].canAdd(car, 0, 0)) {
+            if (car.pos + car.len == center.cells[0].length && out[car.to].canAdd(car, outLane, 0)) {
                 center.remove(car);
-                car.lane = 0;
+                car.lane = outLane;
                 car.pos = 0;
                 out[car.to].add(car);
             } else {
@@ -60,6 +84,7 @@ public class Crossroad {
                     car.stopped = true;
                     break;
                 }
+                outLane = car.lane;
                 in[green].remove(car);
                 car.lane = 0;
                 car.pos = 0;
@@ -84,7 +109,7 @@ public class Crossroad {
             System.out.println("въезд " + (i + 1));
             in[i].show();
         }
-        System.out.println("центр");
+        System.out.println("центр " + (center.cars.isEmpty() ? "" : center.cars.get(0).turn));
         center.show();
         for (int i = 0; i < out.length; i++) {
             System.out.println("выезд " + (i + 1));

@@ -54,6 +54,24 @@ public class Road {
         }
     }
 
+    boolean changeLane(Car car, int lane) {
+        if (!cars.contains(car) || Math.abs(car.lane - lane) != 1 ||
+                lane < 0 || lane >= cells.length) {
+            return false;
+        }
+        for (int i = car.pos; i < car.pos + car.len; i++) {
+            if (cells[lane][i] != 0) {
+                return false;
+            }
+        }
+        for (int i = car.pos; i < car.pos + car.len; i++) {
+            cells[car.lane][i] = 0;
+            cells[lane][i] = car.id;
+        }
+        car.lane = lane;
+        return true;
+    }
+
     void step() {
         for (Car car : cars) {
             int next = car.pos + car.len;
