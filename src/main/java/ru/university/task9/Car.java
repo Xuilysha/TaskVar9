@@ -6,6 +6,8 @@ public class Car {
     int len;
     int lane;
     int pos;
+    int to;
+    boolean stopped;
 
     Car(int id, String tip, int len, int lane, int pos) {
         this.id = id;

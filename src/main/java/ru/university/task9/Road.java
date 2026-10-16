@@ -14,8 +14,20 @@ public class Road {
     }
 
     boolean add(Car car) {
-        if (car.id < 1 || car.len < 1 || car.lane < 0 || car.lane >= cells.length ||
-                car.pos < 0 || car.pos + car.len > cells[0].length) {
+        if (!canAdd(car, car.lane, car.pos)) {
+            return false;
+        }
+
+        for (int i = car.pos; i < car.pos + car.len; i++) {
+            cells[car.lane][i] = car.id;
+        }
+        cars.add(car);
+        return true;
+    }
+
+    boolean canAdd(Car car, int lane, int pos) {
+        if (car.id < 1 || car.len < 1 || lane < 0 || lane >= cells.length ||
+                pos < 0 || pos + car.len > cells[0].length) {
             return false;
         }
 
@@ -25,17 +37,21 @@ public class Road {
             }
         }
 
-        for (int i = car.pos; i < car.pos + car.len; i++) {
-            if (cells[car.lane][i] != 0) {
+        for (int i = pos; i < pos + car.len; i++) {
+            if (cells[lane][i] != 0) {
                 return false;
             }
         }
-
-        for (int i = car.pos; i < car.pos + car.len; i++) {
-            cells[car.lane][i] = car.id;
-        }
-        cars.add(car);
         return true;
+    }
+
+    void remove(Car car) {
+        if (!cars.remove(car)) {
+            return;
+        }
+        for (int i = car.pos; i < car.pos + car.len; i++) {
+            cells[car.lane][i] = 0;
+        }
     }
 
     void step() {
