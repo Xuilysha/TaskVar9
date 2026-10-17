@@ -41,6 +41,25 @@ public class Roundabout {
         return in[from].changeLane(car, lane);
     }
 
+    boolean changeLane(Car car, int lane) {
+        if (!cars.contains(car) || Math.abs(car.lane - lane) != 1 ||
+                lane < 0 || lane >= ring.length) {
+            return false;
+        }
+        int n = ring[lane].length;
+        for (int i = 0; i < car.len; i++) {
+            if (ring[lane][(car.pos + i) % n] != 0) {
+                return false;
+            }
+        }
+        for (int i = 0; i < car.len; i++) {
+            ring[car.lane][(car.pos + i) % n] = 0;
+            ring[lane][(car.pos + i) % n] = car.id;
+        }
+        car.lane = lane;
+        return true;
+    }
+
     void step() {
         for (Road road : out) {
             road.step();
@@ -96,7 +115,7 @@ public class Roundabout {
                     ring[car.lane][start + k] = car.id;
                 }
                 cars.add(car);
-                break;
+                j--;
             }
         }
 
