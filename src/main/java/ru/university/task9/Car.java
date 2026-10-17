@@ -9,6 +9,8 @@ public class Car {
     int to;
     String turn;
     boolean stopped;
+    int ringPassed;
+    int ringTarget;
 
     Car(int id, String tip, int len, int lane, int pos) {
         this.id = id;

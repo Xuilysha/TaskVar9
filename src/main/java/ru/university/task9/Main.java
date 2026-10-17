@@ -23,5 +23,20 @@ public class Main {
                     ", в центре " + (cross.center.cars.isEmpty() ? "нет" : cross.center.cars.get(0).id));
         }
         cross.show();
+
+        System.out.println("круговой перекресток");
+        Roundabout round = new Roundabout(4, 2, 5);
+        round.add(new Car(5, "легковая", 1, 0, 4), 0, 2);
+        round.add(new Car(6, "грузовик", 2, 1, 3), 1, 3);
+        round.add(new Car(7, "автопоезд", 3, 0, 2), 2, 0);
+        round.add(new Car(8, "легковая", 1, 1, 4), 3, 1);
+        for (int i = 1; i <= 25; i++) {
+            round.step();
+            System.out.println("шаг " + i + ", на кольце " + round.cars.size());
+            if (i == 5) {
+                round.show();
+            }
+        }
+        round.show();
     }
 }
