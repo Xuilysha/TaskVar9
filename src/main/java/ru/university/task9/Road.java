@@ -92,4 +92,15 @@ public class Road {
             System.out.println();
         }
     }
+
+    public String view() {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[i].length; j++) {
+                s.append(cells[i][j] == 0 ? ". " : cells[i][j] + " ");
+            }
+            s.append("\n");
+        }
+        return s.toString();
+    }
 }

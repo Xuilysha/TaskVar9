@@ -9,7 +9,7 @@ public class Crossroad {
     int time = 0;
     int outLane = 0;
 
-    Crossroad(int count, int lanes, int size) {
+    public Crossroad(int count, int lanes, int size) {
         if (count < 3 || count > 4) {
             throw new IllegalArgumentException("нужно 3 или 4 дороги");
         }
@@ -23,7 +23,7 @@ public class Crossroad {
         }
     }
 
-    boolean add(Car car, int from, String turn) {
+    public boolean add(Car car, int from, String turn) {
         if (from < 0 || from >= in.length) {
             return false;
         }
@@ -50,14 +50,20 @@ public class Crossroad {
         return true;
     }
 
-    boolean changeLane(Car car, int from, int lane) {
+    public boolean changeLane(Car car, int from, int lane) {
         if (from < 0 || from >= in.length) {
             return false;
         }
         return in[from].changeLane(car, lane);
     }
 
-    void step() {
+    public void setStop(int road) {
+        if (road >= 0 && road < stop.length) {
+            stop[road] = true;
+        }
+    }
+
+    public void step() {
         for (Road road : out) {
             road.step();
         }
@@ -115,5 +121,20 @@ public class Crossroad {
             System.out.println("выезд " + (i + 1));
             out[i].show();
         }
+    }
+
+    public String view() {
+        StringBuilder s = new StringBuilder();
+        s.append("зеленый для дороги ").append(green + 1).append("\n");
+        for (int i = 0; i < in.length; i++) {
+            s.append("въезд ").append(i + 1);
+            if (stop[i]) s.append(" (знак стоп)");
+            s.append("\n").append(in[i].view());
+        }
+        s.append("центр\n").append(center.view());
+        for (int i = 0; i < out.length; i++) {
+            s.append("выезд ").append(i + 1).append("\n").append(out[i].view());
+        }
+        return s.toString();
     }
 }

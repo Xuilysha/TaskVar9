@@ -12,7 +12,7 @@ public class Car {
     int ringPassed;
     int ringTarget;
 
-    Car(int id, String tip, int len, int lane, int pos) {
+    public Car(int id, String tip, int len, int lane, int pos) {
         this.id = id;
         this.tip = tip;
         this.len = len;

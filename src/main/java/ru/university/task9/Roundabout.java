@@ -9,7 +9,7 @@ public class Roundabout {
     ArrayList<Car> cars = new ArrayList<>();
     int part;
 
-    Roundabout(int count, int lanes, int size) {
+    public Roundabout(int count, int lanes, int size) {
         if (count < 3 || count > 6 || lanes < 1 || lanes > 4 || size < 1) {
             throw new IllegalArgumentException("неверный размер кольца");
         }
@@ -23,7 +23,7 @@ public class Roundabout {
         }
     }
 
-    boolean add(Car car, int from, int to) {
+    public boolean add(Car car, int from, int to) {
         if (from < 0 || from >= in.length || to < 0 || to >= out.length) {
             return false;
         }
@@ -34,14 +34,14 @@ public class Roundabout {
         return true;
     }
 
-    boolean changeLane(Car car, int from, int lane) {
+    public boolean changeLane(Car car, int from, int lane) {
         if (from < 0 || from >= in.length) {
             return false;
         }
         return in[from].changeLane(car, lane);
     }
 
-    boolean changeLane(Car car, int lane) {
+    public boolean changeLane(Car car, int lane) {
         if (!cars.contains(car) || Math.abs(car.lane - lane) != 1 ||
                 lane < 0 || lane >= ring.length) {
             return false;
@@ -60,7 +60,7 @@ public class Roundabout {
         return true;
     }
 
-    void step() {
+    public void step() {
         for (Road road : out) {
             road.step();
         }
@@ -140,5 +140,23 @@ public class Roundabout {
             System.out.println("выезд " + (i + 1));
             out[i].show();
         }
+    }
+
+    public String view() {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < in.length; i++) {
+            s.append("въезд ").append(i + 1).append("\n").append(in[i].view());
+        }
+        s.append("кольцо\n");
+        for (int i = 0; i < ring.length; i++) {
+            for (int j = 0; j < ring[i].length; j++) {
+                s.append(ring[i][j] == 0 ? ". " : ring[i][j] + " ");
+            }
+            s.append("\n");
+        }
+        for (int i = 0; i < out.length; i++) {
+            s.append("выезд ").append(i + 1).append("\n").append(out[i].view());
+        }
+        return s.toString();
     }
 }

@@ -2,6 +2,21 @@ plugins {
     id 'application'
 }
 
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.eclipse.jetty:jetty-server:11.0.26'
+    implementation 'org.eclipse.jetty:jetty-servlet:11.0.26'
+    implementation 'org.postgresql:postgresql:42.7.14'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+}
+
 application {
     mainClass = 'ru.university.task9.Main'
+}
+
+test {
+    useJUnitPlatform()
 }
